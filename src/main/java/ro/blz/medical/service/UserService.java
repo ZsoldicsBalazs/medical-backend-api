@@ -16,13 +16,27 @@ public class UserService  implements UserDetailsService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public Optional<? extends BaseEntity<?>> findByUsername(String username) {
-        return doctorRepository.findByEmail(username);
-    }
+//          TODO: IF we have multiple repositories
+//    private final DoctorRepository doctorRepository;
+//    private final PatientRepository patientRepository;
+//    private final AdminRepository adminRepository;
+//
+//    public UserService(DoctorRepository doctorRepository, PatientRepository patientRepository, AdminRepository adminRepository) {
+//        this.doctorRepository = doctorRepository;
+//        this.patientRepository = patientRepository;
+//        this.adminRepository = adminRepository;
+//    }
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return doctorRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
-    }
+        return doctorRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+    }// TODO: IF WE HAVE MULTIPLE REPOSITORIES REPLACE WITH THIS RETURN
+
+//        return doctorRepository.findByUsername(username)
+//                .or(() -> patientRepository.findByUsername(username))
+//                .or(() -> adminRepository.findByUsername(username));
+//    }
 
 }

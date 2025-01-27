@@ -20,6 +20,7 @@ import java.util.List;
 @ToString
 public class Doctor extends BaseEntity<Long>{
 
+    @Builder
     public Doctor(String username, String password, Role role, String firstName, String lastName, String phone, String email, String department, Double salary) {
         super.setUsername(username);
         super.setPassword(password);
