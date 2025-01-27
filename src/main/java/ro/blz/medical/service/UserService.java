@@ -1,20 +1,28 @@
-//package ro.blz.medical.service;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-////import ro.blz.medical.domain.User;
-//import ro.blz.medical.repository.UserRepository;
-//
-//@Service
-//public class UserService {
-//
-//    @Autowired
-//    private UserRepository userRepository;
-//
-////    public User getUser(int id) {
-////        return userRepository.findById(id).orElseThrow(()-> new RuntimeException("User not found"));
-////    }
-////    public User getUserByEmail(String email) {
-////        return userRepository.findByEmail(email);
-////    }
-//}
+package ro.blz.medical.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import ro.blz.medical.domain.BaseEntity;
+import ro.blz.medical.repository.DoctorRepository;
+import java.util.Optional;
+
+@Service
+public class UserService  implements UserDetailsService {
+
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    public Optional<? extends BaseEntity<?>> findByUsername(String username) {
+        return doctorRepository.findByEmail(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return doctorRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+}
