@@ -33,7 +33,6 @@ public class DoctorService {
 
     public void save(DoctorRegistrationRequest request) {
 
-
         if (doctorRepository.existsByEmailIsContainingIgnoreCase(request.email())) {
             throw new RuntimeException("Email already exists");
         }
