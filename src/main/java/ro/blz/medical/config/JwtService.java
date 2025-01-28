@@ -17,41 +17,43 @@ public class JwtService {
     private static final String SECRET_KEY = System.getenv("SECRET_KEY");
     private final long EXPIRATION_TIME = 43200000L; // 12 Hours
 
-    public String extractUserEmail(String jwt) {
+    public String extractUsername(String jwt) {
         return extractClaim(jwt, Claims::getSubject);
     }
 
-    public <T> T extractClaim (String jwt, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwt);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken( UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         return Jwts
                 .builder()
                 .subject(userDetails.getUsername())
+                .claim("roles", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
-    public boolean isTokenValid(String token,UserDetails userDetails) {
-        final String userName = extractUserEmail(token);
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String userName = extractUsername(token);
         return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
+
     private Date extractExpiration(String token) {
-        return extractClaim(token,Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 
 
     private Claims extractAllClaims(String jwt) {
         return Jwts.parser()
-                .decryptWith(getSignInKey())
+                .verifyWith(getSignInKey())
                 .build()
                 .parseSignedClaims(jwt)
                 .getPayload();

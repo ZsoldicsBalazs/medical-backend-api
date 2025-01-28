@@ -17,16 +17,16 @@ import ro.blz.medical.service.UserService;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    @Autowired
+
     private final UserService service;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> service.loadUserByUsername(username);
+        return service::loadUserByUsername;
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(service);
         provider.setPasswordEncoder(passwordEncoder());

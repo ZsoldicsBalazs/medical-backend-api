@@ -6,7 +6,7 @@ import ro.blz.medical.domain.Doctor;
 import java.util.function.Function;
 
 @Service
-public class DoctorDTOMapper implements Function<Doctor,DoctorDTO> {
+public class DoctorDTOMapper implements Function<Doctor, DoctorDTO> {
     @Override
     public DoctorDTO apply(Doctor doctor) {
         return new DoctorDTO(

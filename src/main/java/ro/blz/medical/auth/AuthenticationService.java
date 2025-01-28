@@ -1,7 +1,6 @@
 package ro.blz.medical.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +32,8 @@ public class AuthenticationService {
                 .phone(registration.phone())
                 .role(Role.MEDIC)
                 .department(registration.department())
-                        .build();
+                .build();
+        doctorRepository.save(user);
 
         var jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
@@ -44,8 +44,10 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(DoctorAuthenticationRequest login) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
-
-        var user = doctorRepository.findByEmail(login.getEmail()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        System.out.println("DR AUth login getemail : "+login.getEmail());
+        System.out.println("DR AUth login password : " + login.getPassword());
+        var user = doctorRepository.findByUsername(login.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        System.out.println(user);
         var jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);

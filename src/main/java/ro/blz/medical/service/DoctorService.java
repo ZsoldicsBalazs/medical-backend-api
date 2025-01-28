@@ -10,9 +10,9 @@ import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.dtos.DoctorDTOMapper;
 import ro.blz.medical.repository.DoctorRepository;
 
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
@@ -24,11 +24,13 @@ public class DoctorService {
 
 
     public DoctorDTO getDoctorById(long id) {
-        return doctorRepository.findById(id).map(doctorDTOMapper).orElseThrow( ()-> new RuntimeException("Doctor not found"));
+        return doctorRepository.findById(id).map(doctorDTOMapper).orElseThrow(() -> new RuntimeException("Doctor not found"));
     }
-    public List<Doctor> getAllDoctors() {
-        return null;
+
+    public List<DoctorDTO> getAllDoctors() {
+        return doctorRepository.findAll().stream().map(doctorDTOMapper).collect(Collectors.toList());
     }
+
     public void save(DoctorRegistrationRequest request) {
 
 
@@ -37,7 +39,6 @@ public class DoctorService {
         }
         Doctor newDoctor = new Doctor(
                 request.username(),
-//              TODO: Crypt password
                 request.password(),
                 Role.MEDIC,
                 request.firstName(),
@@ -51,6 +52,7 @@ public class DoctorService {
         doctorRepository.save(newDoctor);
 
     }
+
     public Optional<Doctor> findByEmail(String email) {
         return Optional.ofNullable(doctorRepository.findByEmailIsContainingIgnoreCase(email));
     }

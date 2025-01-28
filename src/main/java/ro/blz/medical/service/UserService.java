@@ -5,12 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ro.blz.medical.domain.BaseEntity;
 import ro.blz.medical.repository.DoctorRepository;
-import java.util.Optional;
 
 @Service
-public class UserService  implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
 
     @Autowired
@@ -28,10 +26,10 @@ public class UserService  implements UserDetailsService {
 //    }
 
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return doctorRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        System.out.println("LoadUserBy Username method "+username);
+        return doctorRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
     }// TODO: IF WE HAVE MULTIPLE REPOSITORIES REPLACE WITH THIS RETURN
 
 //        return doctorRepository.findByUsername(username)

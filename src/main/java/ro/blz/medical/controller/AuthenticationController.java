@@ -26,7 +26,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> register (@RequestBody DoctorAuthenticationRequest login){
+    public ResponseEntity<AuthenticationResponse> login (@RequestBody DoctorAuthenticationRequest login){
+        System.out.println("LOGIN CONTROLLER EMAIL : "+login.getEmail());
         return ResponseEntity.ok(authenticationService.authenticate(login));
     }
 

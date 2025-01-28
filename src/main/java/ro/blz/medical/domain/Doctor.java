@@ -21,14 +21,14 @@ import java.util.List;
 public class Doctor extends BaseEntity<Long>{
 
     @Builder
-    public Doctor(String username, String password, Role role, String firstName, String lastName, String phone, String email, String department, Double salary) {
+    public Doctor(String username, String password, Role role, String firstName, String lastName, String phone,String email, String department, Double salary) {
         super.setUsername(username);
         super.setPassword(password);
         super.setRole(role);
+        super.setEmail(email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
-        this.email = email;
         this.department = department;
         this.salary = salary;
     }
@@ -41,7 +41,7 @@ public class Doctor extends BaseEntity<Long>{
 
     @Column(nullable = false)
     private String phone;
-    private String email;
+
     @Column(nullable = false)
     private String department;
     private Double salary;
