@@ -6,6 +6,7 @@ import ro.blz.medical.domain.Patient;
 import ro.blz.medical.dtos.PatientDTO;
 import ro.blz.medical.repository.PatientRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,7 +15,7 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
-    public Iterable<Patient> findAll() {
+    public List<Patient> findAll() {
         return patientRepository.findAll();
     }
 
