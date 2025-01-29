@@ -2,12 +2,9 @@ package ro.blz.medical.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -15,51 +12,31 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
-public class Patient extends BaseEntity<Long>{
-
-    @Column(nullable = false)
-    private String firstName;
-    @Column(nullable = false)
-    private String lastName;
-    private String phone;
-
-
+public class Patient extends BaseEntity<Long> {
 
     @Builder
-    public Patient(String username,String password, Role role, String email,String phone, String firstName, String lastName) {
-        super.setUsername(username);
-        super.setPassword(password);
-        super.setRole(role);
-        super.setEmail(email);
+    public Patient(String email, String phone, String firstName, String lastName) {
+        this.email = email;
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    private String phone;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY)
+    private User user;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_"+getRole()));
-    }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return super.isAccountNonExpired();
-    }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return super.isEnabled();
-    }
 }

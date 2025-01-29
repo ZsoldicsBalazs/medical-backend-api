@@ -1,14 +1,13 @@
 package ro.blz.medical.domain;
 
-public record DoctorRegistrationRequest(
+public record UserRegistrationRequest(
 
         String username,
         String password,
         String firstName,
         String lastName,
         String phone,
-        String email,
-        String department
+        String email
 
 ) {
 }

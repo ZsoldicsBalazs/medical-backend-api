@@ -3,25 +3,31 @@ package ro.blz.medical.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ro.blz.medical.domain.Doctor;
+import org.springframework.web.bind.annotation.*;
+import ro.blz.medical.auth.AuthenticationResponse;
+import ro.blz.medical.domain.UserRegistrationRequest;
 import ro.blz.medical.dtos.DoctorDTO;
+import ro.blz.medical.service.AuthenticationService;
 import ro.blz.medical.service.DoctorService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1/pacient")
 @RequiredArgsConstructor
 public class AdminController {
 
     private final DoctorService doctorService;
+    private final AuthenticationService authenticationService;
 
     @GetMapping("/doctors")
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         var allDoctors = doctorService.getAllDoctors();
         return new ResponseEntity<>(allDoctors, HttpStatus.OK);
+    }
+
+    @PostMapping("/register-doctor")
+    public ResponseEntity<AuthenticationResponse> register (@RequestBody UserRegistrationRequest registration){
+        return ResponseEntity.ok(authenticationService.registerDoctor(registration));
     }
 }

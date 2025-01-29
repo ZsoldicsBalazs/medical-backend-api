@@ -5,36 +5,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ro.blz.medical.repository.DoctorRepository;
+import ro.blz.medical.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
 
 
     @Autowired
-    private DoctorRepository doctorRepository;
-
-//          TODO: IF we have multiple repositories
-//    private final DoctorRepository doctorRepository;
-//    private final PatientRepository patientRepository;
-//    private final AdminRepository adminRepository;
-//
-//    public UserService(DoctorRepository doctorRepository, PatientRepository patientRepository, AdminRepository adminRepository) {
-//        this.doctorRepository = doctorRepository;
-//        this.patientRepository = patientRepository;
-//        this.adminRepository = adminRepository;
-//    }
+    private UserRepository userRepository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("LoadUserBy Username method "+username);
-        return doctorRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-    }// TODO: IF WE HAVE MULTIPLE REPOSITORIES REPLACE WITH THIS RETURN
+        System.out.println("LoadUserBy Username method " + username);
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
-//        return doctorRepository.findByUsername(username)
-//                .or(() -> patientRepository.findByUsername(username))
-//                .or(() -> adminRepository.findByUsername(username));
-//    }
 
 }

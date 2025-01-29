@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.blz.medical.auth.AuthenticationResponse;
-import ro.blz.medical.auth.AuthenticationService;
-import ro.blz.medical.auth.DoctorAuthenticationRequest;
-import ro.blz.medical.domain.DoctorRegistrationRequest;
+import ro.blz.medical.auth.UserAuthenticationRequest;
+import ro.blz.medical.domain.UserRegistrationRequest;
+import ro.blz.medical.service.AuthenticationService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -21,12 +21,12 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register (@RequestBody DoctorRegistrationRequest registration){
-        return ResponseEntity.ok(authenticationService.register(registration));
+    public ResponseEntity<AuthenticationResponse> register (@RequestBody UserRegistrationRequest registration){
+        return ResponseEntity.ok(authenticationService.registerPatient(registration));
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> login (@RequestBody DoctorAuthenticationRequest login){
+    public ResponseEntity<AuthenticationResponse> login (@RequestBody UserAuthenticationRequest login){
         System.out.println("LOGIN CONTROLLER EMAIL : "+login.getEmail());
         return ResponseEntity.ok(authenticationService.authenticate(login));
     }

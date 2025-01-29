@@ -14,8 +14,7 @@ public class DoctorDTOMapper implements Function<Doctor, DoctorDTO> {
                 doctor.getLastName(),
                 doctor.getPhone(),
                 doctor.getEmail(),
-                doctor.getDepartment(),
-                doctor.getRole()
+                doctor.getDepartment()
         );
     }
 }
