@@ -15,7 +15,8 @@ import lombok.*;
 public class Patient extends BaseEntity<Long> {
 
     @Builder
-    public Patient(String email, String phone, String firstName, String lastName) {
+    public Patient(String email, String phone, String firstName, String lastName,String CNP) {
+        this.CNP=CNP;
         this.email = email;
         this.phone = phone;
         this.firstName = firstName;
@@ -24,6 +25,8 @@ public class Patient extends BaseEntity<Long> {
 
     @Column(nullable = false)
     private String firstName;
+    @Column(unique = true,length = 13)
+    private String CNP;
 
     @Column(nullable = false)
     private String lastName;

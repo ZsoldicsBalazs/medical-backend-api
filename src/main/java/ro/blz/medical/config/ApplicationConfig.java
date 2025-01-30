@@ -1,6 +1,7 @@
 package ro.blz.medical.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,12 +20,13 @@ public class ApplicationConfig {
 
     private final UserService service;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return service;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return service;
+//    }
 
     @Bean
+    @Qualifier("authenticationProvider1")
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(service);

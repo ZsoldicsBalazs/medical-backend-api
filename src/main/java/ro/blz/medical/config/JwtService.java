@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -23,6 +24,7 @@ public class JwtService {
 
     public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwt);
+        System.out.println("ALL CLAIMS: " + claims);
         return claimsResolver.apply(claims);
     }
 
@@ -32,13 +34,14 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .claim("roles", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .expiration(new Date(System.currentTimeMillis() + 1000*60*8)) //8minutes
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUsername(token);
+        System.out.println("VALID OR NOT ?? : "+isTokenExpired(token));
         return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
@@ -47,7 +50,9 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        Date expirationDate = extractClaim(token, Claims::getExpiration);
+        System.out.println(expirationDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        return expirationDate;
     }
 
 

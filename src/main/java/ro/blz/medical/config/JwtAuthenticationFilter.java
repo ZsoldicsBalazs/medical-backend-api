@@ -1,5 +1,7 @@
 package ro.blz.medical.config;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,25 +42,49 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         jwt = authHeader.substring(7);
-        username = jwtService.extractUsername(jwt);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { //if user email exists AND user isn't authenticated
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);         // Get user details from DB
+        try {
+            username = jwtService.extractUsername(jwt);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {                            //check if user and token is valid
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)  // extend this with our request
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { //if user email exists AND user isn't authenticated
+                System.out.println("User is not connected !");
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);         // Get user details from DB
+
+                if (jwtService.isTokenValid(jwt, userDetails)) {                            //check if user and token is valid
+                    System.out.println("Token was VALID !");
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)  // extend this with our request
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+
             }
+    } catch (
+    ExpiredJwtException ex) {
+        // Token expirat
+        sendErrorResponse(response, "Token expirat. Va rugam sa va autentificati din nou.");
+        return;
+    } catch (JwtException | UsernameNotFoundException ex) {
+        // Alte erori legate de JWT sau utilizator negasit
+        sendErrorResponse(response, "Token invalid.");
+        return;
+    }
 
-        }
         filterChain.doFilter(request, response);        // Next filter to be executed
 
     }
+
+    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write(
+                "{\"error\": \"" + message + "\"}"
+        );
+    }
+
 }

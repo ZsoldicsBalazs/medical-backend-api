@@ -24,11 +24,16 @@ public class AuthenticationService {
     private final UserRepository userRepository;
 
     public AuthenticationResponse registerPatient(UserRegistrationRequest registration) {
+        var emailExists = userRepository.findByUsername(registration.username());
+        if (emailExists.isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
         Patient newPatient = Patient.builder()
                 .email(registration.email())
                 .firstName(registration.firstName())
                 .lastName(registration.lastName())
                 .phone(registration.phone())
+                .CNP(registration.CNP())
                 .build();
 
         User newUser = User.builder()
@@ -81,9 +86,6 @@ public class AuthenticationService {
         System.out.println("DR AUth login getemail : " + login.getEmail());
         System.out.println("DR AUth login password : " + login.getPassword());
         var user = userRepository.findByUsername(login.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//        System.out.println(user);
-//        Hibernate.initialize(user);
-//        System.out.println(user);
         var jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);

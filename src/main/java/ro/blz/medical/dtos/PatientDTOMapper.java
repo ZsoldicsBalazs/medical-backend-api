@@ -9,12 +9,14 @@ import java.util.function.Function;
 public class PatientDTOMapper implements Function<Patient, PatientDTO> {
     @Override
     public PatientDTO apply(Patient patient) {
+        var username = patient.getUser() == null ? "" : patient.getUser().getUsername();
         return PatientDTO.builder()
                 .email(patient.getEmail())
-                .username(patient.getUser().getUsername())
+                .username(username)
                 .phone(patient.getPhone())
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
+                .CNP(patient.getCNP())
                 .build();
     }
 
