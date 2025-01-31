@@ -42,12 +42,15 @@ dependencies {
 
 //		UTILS
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.2'
+
 
 
 //			JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: "$jsonwebtoken"
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: "$jsonwebtoken"
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: "$jsonwebtoken"
+
 
 }
 
