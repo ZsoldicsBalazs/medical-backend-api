@@ -1,14 +1,16 @@
-package ro.blz.medical.dtos;
+package ro.blz.medical.dtos.mapper;
 
 import org.springframework.stereotype.Service;
 import ro.blz.medical.domain.Doctor;
+import ro.blz.medical.dtos.DoctorDTO;
 
 import java.util.function.Function;
 
 @Service
-public class DoctorDTOMapper implements Function<Doctor, DoctorDTO> {
+public class DoctorDTOMapperFunc implements Function<Doctor, DoctorDTO> {
     @Override
     public DoctorDTO apply(Doctor doctor) {
+        var username = doctor.getUser() == null ? null : doctor.getUser().getUsername();
         return new DoctorDTO(
                 doctor.getFirstName(),
                 doctor.getLastName(),

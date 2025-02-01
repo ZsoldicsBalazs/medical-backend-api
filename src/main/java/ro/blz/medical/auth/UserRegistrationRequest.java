@@ -1,4 +1,4 @@
-package ro.blz.medical.domain;
+package ro.blz.medical.auth;
 
 public record UserRegistrationRequest(
         String CNP,

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.blz.medical.auth.AuthenticationResponse;
 import ro.blz.medical.auth.UserAuthenticationRequest;
-import ro.blz.medical.domain.UserRegistrationRequest;
+import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.service.AuthenticationService;
 
 @RestController

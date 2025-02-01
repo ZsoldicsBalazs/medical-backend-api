@@ -1,16 +1,20 @@
 package ro.blz.medical.service;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.blz.medical.auth.AuthenticationResponse;
+import ro.blz.medical.auth.DoctorRegistrationRequest;
 import ro.blz.medical.auth.UserAuthenticationRequest;
+import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.config.JwtService;
 import ro.blz.medical.domain.*;
+import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.repository.UserRepository;
 
 @Service
@@ -18,6 +22,7 @@ import ro.blz.medical.repository.UserRepository;
 public class AuthenticationService {
 
 
+    private final ModelMapper modelMapper;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -53,7 +58,7 @@ public class AuthenticationService {
         return authenticationResponse;
     }
 
-    public AuthenticationResponse registerDoctor(UserRegistrationRequest registration) {
+    public DoctorDTO registerDoctor(DoctorRegistrationRequest registration) {
 
         Doctor newDr = Doctor.builder()
                 .phone(registration.phone())
@@ -61,7 +66,9 @@ public class AuthenticationService {
                 .lastName(registration.lastName())
                 .email(registration.email())
                 .salary(0.00)
+                .department(registration.department())
                 .build();
+
         User newUser = User.builder()
                 .username(registration.username())
                 .password(passwordEncoder.encode(registration.password()))
@@ -72,12 +79,14 @@ public class AuthenticationService {
 
         newDr.setUser(newUser);
 
-        userRepository.save(newUser);
 
-        var jwtToken = jwtService.generateToken(newUser);
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-        authenticationResponse.setToken(jwtToken);
-        return authenticationResponse;
+        userRepository.save(newUser);
+        DoctorDTO drdto = modelMapper.map(newDr,DoctorDTO.class);
+//
+//        var jwtToken = jwtService.generateToken(newUser);
+//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+//        authenticationResponse.setToken(jwtToken);
+        return drdto;
     }
 
     public AuthenticationResponse authenticate(UserAuthenticationRequest login) {

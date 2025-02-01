@@ -5,10 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.auth.AuthenticationResponse;
-import ro.blz.medical.domain.UserRegistrationRequest;
+import ro.blz.medical.auth.DoctorRegistrationRequest;
+import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.dtos.PatientDTO;
-import ro.blz.medical.dtos.PatientDTOMapper;
+import ro.blz.medical.dtos.mapper.PatientDTOMapper;
 import ro.blz.medical.service.AuthenticationService;
 import ro.blz.medical.service.DoctorService;
 import ro.blz.medical.service.PatientService;
@@ -33,7 +34,7 @@ public class AdminController {
     }
 
     @PostMapping("/register-doctor")
-    public ResponseEntity<AuthenticationResponse> register (@RequestBody UserRegistrationRequest registration){
+    public ResponseEntity<DoctorDTO> register (@RequestBody DoctorRegistrationRequest registration){
         return ResponseEntity.ok(authenticationService.registerDoctor(registration));
     }
 

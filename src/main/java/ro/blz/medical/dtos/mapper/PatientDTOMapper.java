@@ -1,7 +1,8 @@
-package ro.blz.medical.dtos;
+package ro.blz.medical.dtos.mapper;
 
 import org.springframework.stereotype.Service;
 import ro.blz.medical.domain.Patient;
+import ro.blz.medical.dtos.PatientDTO;
 
 import java.util.function.Function;
 
