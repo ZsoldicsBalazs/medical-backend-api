@@ -1,23 +1,20 @@
 package ro.blz.medical.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 @Getter
 @Setter
 public class Patient extends BaseEntity<Long> {
 
     @Builder
-    public Patient(String email, String phone, String firstName, String lastName,String CNP) {
-        this.CNP=CNP;
+    public Patient(String email, String phone, String firstName, String lastName,String CNP,User user) {
         this.email = email;
+        this.user = user;
+        this.CNP=CNP;
         this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,7 +33,8 @@ public class Patient extends BaseEntity<Long> {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToOne(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "user_id",nullable = true)
     private User user;
 
 

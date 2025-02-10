@@ -5,7 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ro.blz.medical.domain.User;
 import ro.blz.medical.repository.UserRepository;
+
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -16,9 +19,9 @@ public class UserService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("LoadUserBy Username method " + username);
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("LoadUserBy Username USER SERVICE METHOD " + email);
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
 

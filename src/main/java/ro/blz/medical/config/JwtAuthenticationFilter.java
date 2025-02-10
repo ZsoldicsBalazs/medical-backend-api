@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ro.blz.medical.domain.User;
+import ro.blz.medical.service.UserService;
 
 import java.io.IOException;
 
@@ -24,8 +26,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
-
+//    private final UserDetailsService userDetailsService;
+private final UserService userDetailsService;
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -48,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { //if user email exists AND user isn't authenticated
                 System.out.println("User is not connected !");
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);         // Get user details from DB
+                User userDetails = (User) userDetailsService.loadUserByUsername(username);         // Get user details from DB
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {                            //check if user and token is valid
                     System.out.println("Token was VALID !");

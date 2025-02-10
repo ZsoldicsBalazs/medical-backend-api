@@ -6,6 +6,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ro.blz.medical.domain.User;
 
 import javax.crypto.SecretKey;
 import java.time.ZoneId;
@@ -19,7 +20,9 @@ public class JwtService {
     private final long EXPIRATION_TIME = 43200000L; // 12 Hours
 
     public String extractUsername(String jwt) {
-        return extractClaim(jwt, Claims::getSubject);
+        var username = extractClaim(jwt, Claims::getSubject);
+        System.out.println("ACESTA ESTE USERNAME DIN JWT SERVICE EXTRACT USERNAME: " + username);
+        return username;
     }
 
     public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
@@ -28,10 +31,10 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User userDetails) {
         return Jwts
                 .builder()
-                .subject(userDetails.getUsername())
+                .subject(userDetails.getEmail())
                 .claim("roles", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000*60*8)) //8minutes
@@ -39,10 +42,10 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, User userDetails) {
         final String userName = extractUsername(token);
         System.out.println("VALID OR NOT ?? : "+isTokenExpired(token));
-        return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return userName.equals(userDetails.getEmail()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

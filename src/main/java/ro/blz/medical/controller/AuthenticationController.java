@@ -2,6 +2,7 @@ package ro.blz.medical.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +27,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> login (@RequestBody UserAuthenticationRequest login){
+    public ResponseEntity<?> login (@RequestBody UserAuthenticationRequest login){
         System.out.println("LOGIN CONTROLLER EMAIL : "+login.getEmail());
-        return ResponseEntity.ok(authenticationService.authenticate(login));
+        AuthenticationResponse response;
+        try {
+            response = authenticationService.authenticate(login);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        return ResponseEntity.ok(response);
     }
 
 }

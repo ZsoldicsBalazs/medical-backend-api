@@ -10,8 +10,9 @@ import java.util.function.Function;
 public class DoctorDTOMapperFunc implements Function<Doctor, DoctorDTO> {
     @Override
     public DoctorDTO apply(Doctor doctor) {
-        var username = doctor.getUser() == null ? null : doctor.getUser().getUsername();
+        var username = doctor.getUser().getUsername();
         return new DoctorDTO(
+                doctor.getUser().getUsername(),
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getPhone(),

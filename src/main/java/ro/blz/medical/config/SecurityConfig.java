@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,19 +26,17 @@ public class SecurityConfig {
         http.csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/v1/pacient/**").hasAnyRole("PACIENT","ADMIN")
-                                .requestMatchers("/api/v1/medic/**").hasAnyRole("MEDIC","ADMIN")
+                                .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/api/v1/pacient/**").hasAnyRole("PACIENT", "ADMIN")
+                                .requestMatchers("/api/v1/medic/**").hasAnyRole("MEDIC", "ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-
         return http.build();
     }
-
 
 
 }

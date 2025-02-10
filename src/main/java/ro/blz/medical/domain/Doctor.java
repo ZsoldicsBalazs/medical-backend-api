@@ -1,14 +1,10 @@
 package ro.blz.medical.domain;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -16,8 +12,8 @@ import lombok.*;
 public class Doctor extends BaseEntity<Long> {
 
     @Builder
-    public Doctor(String firstName, String lastName, String phone, String email, String department, Double salary) {
-
+    public Doctor(String firstName, String lastName, String phone, String email, String department, Double salary,User user) {
+        this.user = user;
         this.setEmail(email);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,7 +38,8 @@ public class Doctor extends BaseEntity<Long> {
     private String department;
     private Double salary;
 
-    @OneToOne(mappedBy = "doctor", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }
