@@ -1,6 +1,7 @@
 package ro.blz.medical.config;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -44,8 +45,18 @@ public class JwtService {
 
     public boolean isTokenValid(String token, User userDetails) {
         final String userName = extractUsername(token);
-        System.out.println("VALID OR NOT ?? : "+isTokenExpired(token));
         return userName.equals(userDetails.getEmail()) && !isTokenExpired(token);
+    }
+    public boolean validateToken(String token){
+        try {
+            Jwts.parser()
+                    .verifyWith(getSignInKey())
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        }catch (JwtException | IllegalArgumentException e){
+            return false;
+        }
     }
 
     private boolean isTokenExpired(String token) {

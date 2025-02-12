@@ -4,14 +4,15 @@ package ro.blz.medical.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.auth.AuthenticationResponse;
 import ro.blz.medical.auth.UserAuthenticationRequest;
 import ro.blz.medical.auth.UserRegistrationRequest;
+import ro.blz.medical.config.JwtService;
 import ro.blz.medical.service.AuthenticationService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -19,6 +20,7 @@ import ro.blz.medical.service.AuthenticationService;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
 
 
     @PostMapping("/register")
@@ -32,12 +34,20 @@ public class AuthenticationController {
         AuthenticationResponse response;
         try {
             response = authenticationService.authenticate(login);
+            return ResponseEntity.ok(response);
         }
         catch (Exception e){
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", e.getMessage());
             System.out.println(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(errorResponse,HttpStatus.UNAUTHORIZED);
         }
-        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/validate-token")
+    public ResponseEntity<Boolean> validateToken(@RequestParam String token){
+        boolean isValid = jwtService.validateToken(token);
+        System.out.println(isValid);
+        return ResponseEntity.ok(isValid);
     }
 
 }
