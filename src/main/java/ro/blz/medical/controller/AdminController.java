@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ro.blz.medical.auth.AuthenticationResponse;
 import ro.blz.medical.auth.DoctorRegistrationRequest;
-import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.dtos.PatientDTO;
 import ro.blz.medical.dtos.mapper.PatientDTOMapper;
-import ro.blz.medical.service.AuthenticationService;
+import ro.blz.medical.service.AdminService;
 import ro.blz.medical.service.DoctorService;
 import ro.blz.medical.service.PatientService;
 
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final DoctorService doctorService;
-    private final AuthenticationService authenticationService;
+    private final AdminService adminService;
     private final PatientService patientService;
     private final PatientDTOMapper patientDTOMapper;
 
@@ -34,12 +32,12 @@ public class AdminController {
     }
 
     @PostMapping("/register-doctor")
-    public ResponseEntity<DoctorDTO> register (@RequestBody DoctorRegistrationRequest registration){
-        return ResponseEntity.ok(authenticationService.registerDoctor(registration));
+    public ResponseEntity<DoctorDTO> register(@RequestBody DoctorRegistrationRequest registration) {
+        return ResponseEntity.ok(adminService.registerDoctor(registration));
     }
 
     @GetMapping("/patients")
-    public List<PatientDTO> getAllPatients(){
+    public List<PatientDTO> getAllPatients() {
         return patientService.findAll().stream().map(patientDTOMapper).collect(Collectors.toList());
     }
 }
