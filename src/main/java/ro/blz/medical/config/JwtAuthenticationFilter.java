@@ -10,8 +10,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
@@ -26,8 +24,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-//    private final UserDetailsService userDetailsService;
-private final UserService userDetailsService;
+    private final UserService userDetailsService;
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -66,16 +64,16 @@ private final UserService userDetailsService;
                 }
 
             }
-    } catch (
-    ExpiredJwtException ex) {
-        // Token expirat
-        sendErrorResponse(response, "Token expirat. Va rugam sa va autentificati din nou.");
-        return;
-    } catch (JwtException | UsernameNotFoundException ex) {
-        // Alte erori legate de JWT sau utilizator negasit
-        sendErrorResponse(response, "Token invalid.");
-        return;
-    }
+        } catch (
+                ExpiredJwtException ex) {
+            // Token expirat
+            sendErrorResponse(response, "Token expirat. Va rugam sa va autentificati din nou.");
+            return;
+        } catch (JwtException | UsernameNotFoundException ex) {
+            // Alte erori legate de JWT sau utilizator negasit
+            sendErrorResponse(response, "Token invalid.");
+            return;
+        }
 
         filterChain.doFilter(request, response);        // Next filter to be executed
 

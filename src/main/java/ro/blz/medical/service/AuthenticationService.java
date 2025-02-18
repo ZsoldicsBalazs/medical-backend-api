@@ -9,16 +9,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ro.blz.medical.auth.AuthenticationResponse;
-import ro.blz.medical.auth.DoctorRegistrationRequest;
-import ro.blz.medical.auth.UserAuthenticationRequest;
-import ro.blz.medical.auth.UserRegistrationRequest;
+import ro.blz.medical.auth.*;
 import ro.blz.medical.config.JwtService;
 import ro.blz.medical.domain.*;
 import ro.blz.medical.dtos.DoctorDTO;
+import ro.blz.medical.dtos.SecretaryDTO;
 import ro.blz.medical.dtos.mapper.DoctorDTOMapperFunc;
+import ro.blz.medical.dtos.mapper.SecretaryDTOMapper;
 import ro.blz.medical.repository.DoctorRepository;
 import ro.blz.medical.repository.PatientRepository;
+import ro.blz.medical.repository.SecretaryRepository;
 import ro.blz.medical.repository.UserRepository;
 
 @Service
@@ -34,9 +34,11 @@ public class AuthenticationService {
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final DoctorDTOMapperFunc dtoMapperFunc;
+    private final SecretaryRepository secretaryRepository;
+    private final SecretaryDTOMapper secretaryDTOMapper;
 
     public AuthenticationResponse registerPatient(UserRegistrationRequest registration) {
-        var emailExists = userRepository.findByUsername(registration.username());
+        var emailExists = userRepository.findByEmail(registration.email());
         if (emailExists.isPresent()) {
             throw new RuntimeException("Email already exists");
         }
@@ -91,6 +93,29 @@ public class AuthenticationService {
         return newDoctorCreated;
     }
 
+    @Transactional
+    public SecretaryDTO registerSecretary(SecretaryRegistrationRequest registration){
+        if (secretaryRepository.existsByEmailEquals(registration.email())){
+            throw new RuntimeException("Email already exists");
+        }
+        User user = User.builder()
+                .username(registration.username())
+                .password(passwordEncoder.encode(registration.password()))
+                .role(Role.SECRETARY)
+                .email(registration.email())
+                .build();
+
+        Secretary secretary = new Secretary(
+                registration.firstName(),
+                registration.lastName(),
+                registration.email(),
+                registration.phoneNumber(),
+                registration.salary(),
+                user
+        );
+        secretaryRepository.save(secretary);
+        return secretaryDTOMapper.apply(secretary);
+    }
     public AuthenticationResponse authenticate(UserAuthenticationRequest login) {
 //        User user = userRepository.findByEmail(login.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
 //        System.out.println("user: " + user);

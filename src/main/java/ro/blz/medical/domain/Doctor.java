@@ -13,13 +13,14 @@ public class Doctor extends BaseEntity<Long> {
 
     @Builder
     public Doctor(String firstName, String lastName, String phone, String email, String department, Double salary,User user) {
-        this.user = user;
+
         this.setEmail(email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.department = department;
         this.salary = salary;
+        this.user = user;
     }
 
     @Column(nullable = false)

@@ -35,7 +35,5 @@ public class PatientService {
                 .lastName(patient.getLastName())
                 .phone(patient.getPhone())
                 .build();
-
-
     }
 }
