@@ -48,7 +48,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Permite doar acest domeniu
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200","http://192.168.1.8:4200/")); // Permite doar acest domeniu
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Metode HTTP permise
         configuration.setAllowedHeaders(Arrays.asList("*")); // Toate headerele sunt permise
         configuration.setAllowCredentials(true); // Permite credențiale (de exemplu, cookies)

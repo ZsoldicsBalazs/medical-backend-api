@@ -38,7 +38,7 @@ public class JwtService {
                 .subject(userDetails.getEmail())
                 .claim("roles", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000*60*8)) //8minutes
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //8minutes
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
     }
@@ -47,6 +47,7 @@ public class JwtService {
         final String userName = extractUsername(token);
         return userName.equals(userDetails.getEmail()) && !isTokenExpired(token);
     }
+//    Validating token for angular on endpoint.
     public boolean validateToken(String token){
         try {
             Jwts.parser()

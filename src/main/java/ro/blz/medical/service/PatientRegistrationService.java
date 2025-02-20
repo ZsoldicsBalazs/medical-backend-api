@@ -31,7 +31,7 @@ public class PatientRegistrationService {
                 .username(registration.username())
                 .password(passwordEncoder.encode(registration.password()))
                 .email(registration.email())
-                .role(Role.PACIENT)
+                .role(Role.PATIENT)
                 .build();
 
         Patient newPatient = Patient.builder()

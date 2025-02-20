@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.auth.DoctorRegistrationRequest;
+import ro.blz.medical.auth.SecretaryRegistrationRequest;
 import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.dtos.PatientDTO;
+import ro.blz.medical.dtos.SecretaryDTO;
 import ro.blz.medical.dtos.mapper.PatientDTOMapper;
 import ro.blz.medical.service.AdminService;
 import ro.blz.medical.service.DoctorService;
@@ -39,5 +41,15 @@ public class AdminController {
     @GetMapping("/patients")
     public List<PatientDTO> getAllPatients() {
         return patientService.findAll().stream().map(patientDTOMapper).collect(Collectors.toList());
+    }
+    @PostMapping("/register-secretary")
+    public ResponseEntity<SecretaryDTO> registerSecretary(@RequestBody SecretaryRegistrationRequest registration) {
+        return ResponseEntity.ok(adminService.registerSecretary(registration));
+    }
+
+    @GetMapping("/patients/{id}")
+    public ResponseEntity<PatientDTO> findPatientById(@PathVariable Long id) {
+        PatientDTO patientFound = patientService.findById(id).map(patientDTOMapper).orElseThrow(()-> new RuntimeException("No patient with this id"));
+        return new ResponseEntity<>(patientFound,HttpStatus.OK);
     }
 }

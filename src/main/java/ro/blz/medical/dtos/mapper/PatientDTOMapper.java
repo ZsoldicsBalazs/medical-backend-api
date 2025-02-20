@@ -11,11 +11,10 @@ import java.util.function.Function;
 public class PatientDTOMapper implements Function<Patient, PatientDTO> {
     @Override
     public PatientDTO apply(Patient patient) {
-        User user = patient.getUser();
-        var username = user == null ? "" : user.getUsername();
+
         return PatientDTO.builder()
+                .id(patient.getID())
                 .email(patient.getEmail())
-                .username(username)
                 .phone(patient.getPhone())
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
