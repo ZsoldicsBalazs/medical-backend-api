@@ -28,7 +28,7 @@ public class PatientService {
         if (patientRepository.existsByEmail(patient.getEmail())) {
             throw new RuntimeException("Pacient email already exists");
         }
-        patientRepository.savePatient(patient);
+        patientRepository.save(patient);
         return PatientDTO.builder()
                 .email(patient.getEmail())
                 .firstName(patient.getFirstName())

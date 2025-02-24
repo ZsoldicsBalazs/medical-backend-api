@@ -14,4 +14,5 @@ public interface PatientRepository extends ICatalogRepository<Patient,Long> {
     public default Optional<Patient> savePatient(Patient patient){
         return Optional.of(this.save(patient));
     }
+    public Optional<Patient> findByCNPEqualsIgnoreCase(String cnp);
 }

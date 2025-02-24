@@ -1,5 +1,6 @@
 package ro.blz.medical.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import ro.blz.medical.domain.Role;
 import ro.blz.medical.domain.User;
 import ro.blz.medical.dtos.PatientDTO;
 import ro.blz.medical.dtos.mapper.PatientDTOMapper;
+import ro.blz.medical.exceptions.DuplicateUserException;
 import ro.blz.medical.repository.PatientRepository;
 import ro.blz.medical.repository.UserRepository;
 
@@ -21,10 +23,12 @@ public class PatientRegistrationService {
     private final UserRepository userRepository;
     private final PatientDTOMapper patientDTOMapper;
 
+    @Transactional
     public PatientDTO registerPatient(UserRegistrationRequest registration) {
         var emailExists = userRepository.findByEmail(registration.email());
-        if (emailExists.isPresent()) {
-            throw new RuntimeException("Email already exists");
+        var existingCNP = patientRepository.findByCNPEqualsIgnoreCase(registration.CNP());
+        if (emailExists.isPresent() || existingCNP.isPresent()) {
+            throw new DuplicateUserException("Patient with email or CNP already exists");
         }
 
         User newUser = User.builder()

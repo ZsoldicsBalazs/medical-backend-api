@@ -10,9 +10,12 @@ import ro.blz.medical.auth.UserAuthenticationRequest;
 import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.config.JwtService;
 import ro.blz.medical.dtos.PatientDTO;
+import ro.blz.medical.exceptions.DuplicateUserException;
+import ro.blz.medical.exceptions.ErrorResponse;
 import ro.blz.medical.service.AuthenticationService;
 import ro.blz.medical.service.PatientRegistrationService;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +30,21 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<PatientDTO> register(@RequestBody UserRegistrationRequest registration) {
-        return ResponseEntity.ok(patientRegistrationService.registerPatient(registration));
+    public ResponseEntity<?> register(@RequestBody UserRegistrationRequest registration) {
+//        try {
+            return ResponseEntity.ok(patientRegistrationService.registerPatient(registration));
+//        }catch (DuplicateUserException due){
+//            System.out.println("Controller duplicate user exception: " + due.getMessage());
+//            return new ResponseEntity<>(due.getMessage(),HttpStatus.BAD_REQUEST);
+//        }
     }
+
+//    @ExceptionHandler(value = DuplicateUserException.class)
+//    @ResponseStatus(HttpStatus.CONFLICT)
+//    public ErrorResponse handleDuplicateUserException(DuplicateUserException duplicateUserException) {
+//        return new ErrorResponse(HttpStatus.CONFLICT.value(),duplicateUserException.getMessage());
+//    }
+
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> login(@RequestBody UserAuthenticationRequest login) {
