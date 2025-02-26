@@ -45,16 +45,8 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> login(@RequestBody UserAuthenticationRequest login) {
         System.out.println("LOGIN CONTROLLER EMAIL : " + login.getEmail());
-        AuthenticationResponse response;
-        try {
-            response = authenticationService.authenticate(login);
+        AuthenticationResponse response= authenticationService.authenticate(login);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", e.getMessage());
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-        }
     }
 
     @GetMapping("/validate-token")

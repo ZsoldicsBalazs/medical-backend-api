@@ -3,7 +3,10 @@ package ro.blz.medical.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.blz.medical.auth.AuthenticationResponse;
@@ -26,12 +29,16 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse authenticate(UserAuthenticationRequest login) {
-//        User user = userRepository.findByEmail(login.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//        System.out.println("user: " + user);
-        var user = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
-        System.out.println("DR AUth login getemail : " + login.getEmail());
-        System.out.println("DR AUth login password : " + login.getPassword());
+
+        Authentication user;
+        try {
+            user = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+            System.out.println("DR AUth login getemail : " + login.getEmail());
+            System.out.println("DR AUth login password : " + login.getPassword());
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+
         var jwtToken = jwtService.generateToken((User) user.getPrincipal());
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);
