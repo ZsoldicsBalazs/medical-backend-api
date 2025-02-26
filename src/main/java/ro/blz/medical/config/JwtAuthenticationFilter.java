@@ -1,5 +1,6 @@
 package ro.blz.medical.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ro.blz.medical.domain.User;
+import ro.blz.medical.exceptions.ErrorResponse;
 import ro.blz.medical.service.UserService;
 
 import java.io.IOException;
@@ -82,9 +85,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write(
-                "{\"error\": \"" + message + "\"}"
-        );
+        ObjectMapper mapper = new ObjectMapper();
+        response.getWriter().write(mapper.writeValueAsString(new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), message)));
     }
 
 }

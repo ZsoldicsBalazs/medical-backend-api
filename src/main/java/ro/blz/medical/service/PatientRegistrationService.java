@@ -10,7 +10,7 @@ import ro.blz.medical.domain.Role;
 import ro.blz.medical.domain.User;
 import ro.blz.medical.dtos.PatientDTO;
 import ro.blz.medical.dtos.mapper.PatientDTOMapper;
-import ro.blz.medical.exceptions.DuplicateUserException;
+import ro.blz.medical.exceptions.UserAlreadyExistsException;
 import ro.blz.medical.repository.PatientRepository;
 import ro.blz.medical.repository.UserRepository;
 
@@ -28,7 +28,7 @@ public class PatientRegistrationService {
         var emailExists = userRepository.findByEmail(registration.email());
         var existingCNP = patientRepository.findByCNPEqualsIgnoreCase(registration.CNP());
         if (emailExists.isPresent() || existingCNP.isPresent()) {
-            throw new DuplicateUserException("Patient with email or CNP already exists");
+            throw new UserAlreadyExistsException("Patient with email or CNP already exists");
         }
 
         User newUser = User.builder()

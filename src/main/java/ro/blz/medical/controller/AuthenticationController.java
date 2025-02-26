@@ -9,13 +9,9 @@ import ro.blz.medical.auth.AuthenticationResponse;
 import ro.blz.medical.auth.UserAuthenticationRequest;
 import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.config.JwtService;
-import ro.blz.medical.dtos.PatientDTO;
-import ro.blz.medical.exceptions.DuplicateUserException;
-import ro.blz.medical.exceptions.ErrorResponse;
 import ro.blz.medical.service.AuthenticationService;
 import ro.blz.medical.service.PatientRegistrationService;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,15 +29,15 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@RequestBody UserRegistrationRequest registration) {
 //        try {
             return ResponseEntity.ok(patientRegistrationService.registerPatient(registration));
-//        }catch (DuplicateUserException due){
+//        }catch (UserAlreadyExistsException due){
 //            System.out.println("Controller duplicate user exception: " + due.getMessage());
 //            return new ResponseEntity<>(due.getMessage(),HttpStatus.BAD_REQUEST);
 //        }
     }
 
-//    @ExceptionHandler(value = DuplicateUserException.class)
+//    @ExceptionHandler(value = UserAlreadyExistsException.class)
 //    @ResponseStatus(HttpStatus.CONFLICT)
-//    public ErrorResponse handleDuplicateUserException(DuplicateUserException duplicateUserException) {
+//    public ErrorResponse handleDuplicateUserException(UserAlreadyExistsException duplicateUserException) {
 //        return new ErrorResponse(HttpStatus.CONFLICT.value(),duplicateUserException.getMessage());
 //    }
 
