@@ -26,4 +26,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse authenticationException(AuthenticationException ex) {
         return new ErrorResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage());
     }
+
+    @ExceptionHandler(value = DoctorNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse doctorNotFound(DoctorNotFoundException ex){
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
 }

@@ -30,14 +30,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(UserAuthenticationRequest login) {
 
-        Authentication user;
-        try {
-            user = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+        Authentication user = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
             System.out.println("DR AUth login getemail : " + login.getEmail());
             System.out.println("DR AUth login password : " + login.getPassword());
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
+
 
         var jwtToken = jwtService.generateToken((User) user.getPrincipal());
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();

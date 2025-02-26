@@ -28,7 +28,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegistrationRequest registration) {
 //        try {
-            return ResponseEntity.ok(patientRegistrationService.registerPatient(registration));
+        return ResponseEntity.ok(patientRegistrationService.registerPatient(registration));
 //        }catch (UserAlreadyExistsException due){
 //            System.out.println("Controller duplicate user exception: " + due.getMessage());
 //            return new ResponseEntity<>(due.getMessage(),HttpStatus.BAD_REQUEST);
@@ -45,8 +45,8 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> login(@RequestBody UserAuthenticationRequest login) {
         System.out.println("LOGIN CONTROLLER EMAIL : " + login.getEmail());
-        AuthenticationResponse response= authenticationService.authenticate(login);
-            return ResponseEntity.ok(response);
+        AuthenticationResponse response = authenticationService.authenticate(login);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/validate-token")

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ro.blz.medical.domain.Doctor;
 import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.dtos.mapper.DoctorDTOMapperFunc;
+import ro.blz.medical.exceptions.DoctorNotFoundException;
 import ro.blz.medical.repository.DoctorRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class DoctorService {
 //        var dr = doctorRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
 //        return modelMapper.map(dr,DoctorDTO.class);
 
-        return doctorRepository.findById(id).map(doctorDTOMapperFunc).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        return doctorRepository.findById(id).map(doctorDTOMapperFunc).orElseThrow(() -> new DoctorNotFoundException("Doctor with id: "+ id +", not found"));
     }
 
     public List<DoctorDTO> getAllDoctors() {
