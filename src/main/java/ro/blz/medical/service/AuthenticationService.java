@@ -1,24 +1,14 @@
 package ro.blz.medical.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.blz.medical.auth.AuthenticationResponse;
 import ro.blz.medical.auth.UserAuthenticationRequest;
 import ro.blz.medical.config.JwtService;
 import ro.blz.medical.domain.User;
-import ro.blz.medical.dtos.mapper.DoctorDTOMapperFunc;
-import ro.blz.medical.dtos.mapper.SecretaryDTOMapper;
-import ro.blz.medical.repository.DoctorRepository;
-import ro.blz.medical.repository.PatientRepository;
-import ro.blz.medical.repository.SecretaryRepository;
-import ro.blz.medical.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

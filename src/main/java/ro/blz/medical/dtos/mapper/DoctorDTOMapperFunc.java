@@ -11,6 +11,7 @@ public class DoctorDTOMapperFunc implements Function<Doctor, DoctorDTO> {
     @Override
     public DoctorDTO apply(Doctor doctor) {
         return new DoctorDTO(
+                doctor.getID(),
                 doctor.getFirstName(),
                 doctor.getLastName(),
                 doctor.getPhone(),

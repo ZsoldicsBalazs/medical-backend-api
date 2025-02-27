@@ -1,6 +1,7 @@
 package ro.blz.medical.service;
 
 
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class DoctorService {
     private ModelMapper modelMapper;
 
 
+
     public DoctorDTO getDoctorById(long id) {
 //        EXAMPLE WITH MODEL MAPPER !
 //        var dr = doctorRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
@@ -43,4 +45,16 @@ public class DoctorService {
     }
 
 
+    @Transactional
+    public DoctorDTO updateDoctor(DoctorDTO updatedDoctor) {
+        if (updatedDoctor == null){
+            throw new NullPointerException("updatedDoctor is null");
+        }
+        Doctor doctor = doctorRepository.findById(updatedDoctor.id()).orElseThrow(()-> new DoctorNotFoundException("Doctor with id: " + updatedDoctor.id() + " not found"));
+        doctor.setFirstName(updatedDoctor.firstName());
+        doctor.setLastName(updatedDoctor.lastName());
+        doctor.setEmail(updatedDoctor.email());
+        doctor.setPhone(updatedDoctor.phone());
+        return doctorDTOMapperFunc.apply(doctor);
+    }
 }

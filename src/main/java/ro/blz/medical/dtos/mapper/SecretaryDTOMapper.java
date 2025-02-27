@@ -11,9 +11,8 @@ public class SecretaryDTOMapper implements Function<Secretary,SecretaryDTO> {
 
     @Override
     public SecretaryDTO apply(Secretary secretary) {
-        var username = secretary.getUser().getUsername();
         return new SecretaryDTO(
-                username,
+                secretary.getID(),
                 secretary.getFirstName(),
                 secretary.getLastName(),
                 secretary.getEmail(),

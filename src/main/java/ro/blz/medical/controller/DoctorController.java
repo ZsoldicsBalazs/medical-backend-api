@@ -3,10 +3,7 @@ package ro.blz.medical.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.service.DoctorService;
 
@@ -28,5 +25,11 @@ public class DoctorController {
     public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable long id){
         var doctor = doctorService.getDoctorById(id);
         return ResponseEntity.ok(doctor);
+    }
+
+    @PutMapping()
+    public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody DoctorDTO updatedDoctor){
+        var doctorUpdated = doctorService.updateDoctor(updatedDoctor);
+        return ResponseEntity.ok(doctorUpdated);
     }
 }
