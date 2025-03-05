@@ -1,5 +1,6 @@
 package ro.blz.medical.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,4 +53,11 @@ public class AdminController {
         PatientDTO patientFound = patientService.findById(id).map(patientDTOMapper).orElseThrow(()-> new RuntimeException("No patient with this id"));
         return new ResponseEntity<>(patientFound,HttpStatus.OK);
     }
+
+    @PutMapping ("patients")
+    ResponseEntity<PatientDTO> updatePatient(@RequestBody @Valid PatientDTO patientDTO) {
+        PatientDTO patientUpdated = patientService.update(patientDTO);
+        return new ResponseEntity<>(patientUpdated,HttpStatus.ACCEPTED);
+    }
+
 }

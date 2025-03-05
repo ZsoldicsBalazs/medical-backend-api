@@ -5,13 +5,14 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import ro.blz.medical.domain.User;
 
 import javax.crypto.SecretKey;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -24,6 +25,11 @@ public class JwtService {
         var username = extractClaim(jwt, Claims::getSubject);
         System.out.println("ACESTA ESTE USERNAME DIN JWT SERVICE EXTRACT USERNAME: " + username);
         return username;
+    }
+    public SimpleGrantedAuthority extractRole(String jwt){
+        List roles = extractAllClaims(jwt).get("roles", List.class);
+        System.out.println("ROLES --------------------------> : " + roles);
+        return (SimpleGrantedAuthority) roles.getFirst();
     }
 
     public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {

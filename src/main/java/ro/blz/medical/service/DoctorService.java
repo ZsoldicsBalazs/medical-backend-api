@@ -26,10 +26,6 @@ public class DoctorService {
 
 
     public DoctorDTO getDoctorById(long id) {
-//        EXAMPLE WITH MODEL MAPPER !
-//        var dr = doctorRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found"));
-//        return modelMapper.map(dr,DoctorDTO.class);
-
         return doctorRepository.findById(id).map(doctorDTOMapperFunc).orElseThrow(() -> new DoctorNotFoundException("Doctor with id: "+ id +", not found"));
     }
 
@@ -38,12 +34,11 @@ public class DoctorService {
     }
 
     public DoctorDTO deleteDoctorById(long id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new DoctorNotFoundException("Doctor not found"));
         DoctorDTO deletedDoctor = modelMapper.map(doctor, DoctorDTO.class);
         doctorRepository.delete(doctor);
         return deletedDoctor;
     }
-
 
     @Transactional
     public DoctorDTO updateDoctor(DoctorDTO updatedDoctor) {

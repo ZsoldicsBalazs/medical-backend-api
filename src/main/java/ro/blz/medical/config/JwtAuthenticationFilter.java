@@ -47,11 +47,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
 
         try {
-            username = jwtService.extractUsername(jwt);
+            username = jwtService.extractUsername(jwt); // ACTUALLY THIS IS AN EMAIL !
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { //if user email exists AND user isn't authenticated
                 System.out.println("User is not connected !");
-                User userDetails = (User) userDetailsService.loadUserByUsername(username);         // Get user details from DB
+                User userDetails = (User) userDetailsService.loadUserByUsername(username);         // Get USER FROM DB BY EMAIL !!
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {                            //check if user and token is valid
                     System.out.println("Token was VALID !");

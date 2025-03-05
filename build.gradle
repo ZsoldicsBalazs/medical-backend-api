@@ -38,11 +38,13 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 
 //		DB
-	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'org.postgresql:postgresql'
 
 //		UTILS
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.2'
+	implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '8.0.2.Final'
+
 
 
 

@@ -2,7 +2,6 @@ package ro.blz.medical.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.auth.AuthenticationResponse;
@@ -11,9 +10,6 @@ import ro.blz.medical.auth.UserRegistrationRequest;
 import ro.blz.medical.config.JwtService;
 import ro.blz.medical.service.AuthenticationService;
 import ro.blz.medical.service.PatientRegistrationService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -44,9 +40,9 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> login(@RequestBody UserAuthenticationRequest login) {
-        System.out.println("LOGIN CONTROLLER EMAIL : " + login.getEmail());
-        AuthenticationResponse response = authenticationService.authenticate(login);
-        return ResponseEntity.ok(response);
+
+            AuthenticationResponse response = authenticationService.authenticate(login);
+            return ResponseEntity.ok(response);
     }
 
     @GetMapping("/validate-token")

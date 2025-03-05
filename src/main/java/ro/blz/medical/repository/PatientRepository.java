@@ -1,5 +1,6 @@
 package ro.blz.medical.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ro.blz.medical.domain.Patient;
 
@@ -15,4 +16,7 @@ public interface PatientRepository extends ICatalogRepository<Patient,Long> {
         return Optional.of(this.save(patient));
     }
     public Optional<Patient> findByCNPEqualsIgnoreCase(String cnp);
+    public Optional<Patient> findByEmailIgnoreCase(String email);
+    @Query("SELECT p FROM Patient p WHERE p.user.user_id = :id")
+    public Optional<Patient> findByUserId(Long id);
 }
