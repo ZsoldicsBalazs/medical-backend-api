@@ -50,14 +50,10 @@ public class AdminController {
 
     @GetMapping("/patients/{id}")
     public ResponseEntity<PatientDTO> findPatientById(@PathVariable Long id) {
-        PatientDTO patientFound = patientService.findById(id).map(patientDTOMapper).orElseThrow(()-> new RuntimeException("No patient with this id"));
+        PatientDTO patientFound = patientService.findById(id);
         return new ResponseEntity<>(patientFound,HttpStatus.OK);
     }
 
-    @PutMapping ("patients")
-    ResponseEntity<PatientDTO> updatePatient(@RequestBody @Valid PatientDTO patientDTO) {
-        PatientDTO patientUpdated = patientService.update(patientDTO);
-        return new ResponseEntity<>(patientUpdated,HttpStatus.ACCEPTED);
-    }
+
 
 }

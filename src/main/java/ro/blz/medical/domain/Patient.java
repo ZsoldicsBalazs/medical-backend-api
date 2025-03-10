@@ -24,7 +24,7 @@ public class Patient extends BaseEntity<Long> {
     private User user;
 
     @Builder
-    public Patient(String email, String phone, String firstName, String lastName, String CNP, User user) {
+    public Patient(long id,String email, String phone, String firstName, String lastName, String CNP, User user) {
         this.email = email;
         this.user = user;
         this.CNP = CNP;
@@ -33,5 +33,15 @@ public class Patient extends BaseEntity<Long> {
         this.lastName = lastName;
     }
 
-
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "firstName='" + firstName + '\'' +
+                ", CNP='" + CNP + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", user=" + user +
+                "} " + super.toString();
+    }
 }

@@ -7,5 +7,5 @@ public record DoctorDTO(
         String phone,
         String email,
         String department
-) {
+) implements BaseDTO {
 }
