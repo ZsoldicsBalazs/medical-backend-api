@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.dtos.AppointmentDTO;
+import ro.blz.medical.dtos.AppointmentDetailsDTO;
 import ro.blz.medical.service.AppointmentService;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
         return ResponseEntity.ok("Body");
+    }
+
+    @GetMapping({"/{id}"})
+    public List<AppointmentDetailsDTO> findByPatientId(@PathVariable Long id) {
+        return appointmentService.getAppointmentDetailsByPatientID(id);
     }
 
 }

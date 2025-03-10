@@ -3,6 +3,7 @@ package ro.blz.medical.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.blz.medical.dtos.AppointmentDTO;
+import ro.blz.medical.dtos.AppointmentDetailsDTO;
 import ro.blz.medical.dtos.mapper.AppointmentDTOMapperFunc;
 import ro.blz.medical.repository.AppointmentRepository;
 
@@ -22,5 +23,10 @@ public class AppointmentService {
 //        appointmentRepository.save(new Appointment(AppointmentSatus.SCHEDULED, patient,doctor, LocalDate.now(), LocalTime.of(22,25) ));
 
         return appointmentRepository.findAll().stream().map(appointmentDTOMapperFunc).toList();
+    }
+
+    public List<AppointmentDetailsDTO> getAppointmentDetailsByPatientID(long id){
+        System.out.println(id);
+        return appointmentRepository.getAppointmentByPatientId(id);
     }
 }
