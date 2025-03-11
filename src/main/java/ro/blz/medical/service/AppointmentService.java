@@ -22,4 +22,9 @@ public class AppointmentService {
         System.out.println(id);
         return appointmentRepository.getAppointmentByPatientId(id);
     }
+
+    public void deleteAppointment(long id){
+
+        appointmentRepository.deleteById(id);
+    }
 }

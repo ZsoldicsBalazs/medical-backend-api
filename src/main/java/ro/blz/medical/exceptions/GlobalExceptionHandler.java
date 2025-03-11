@@ -70,6 +70,12 @@ public class GlobalExceptionHandler {
         System.out.println(errors);
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),errors.toString());
     }
+    @ExceptionHandler(value = AppointmentNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse appointmentNotFound(AppointmentNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
 
 
     @ExceptionHandler(DataIntegrityViolationException.class)

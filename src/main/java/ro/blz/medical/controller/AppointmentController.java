@@ -24,9 +24,15 @@ public class AppointmentController {
         return ResponseEntity.ok("Body");
     }
 
-    @GetMapping({"/{id}"})
+    @GetMapping("/{id}")
     public List<AppointmentDetailsDTO> findByPatientId(@PathVariable Long id) {
         return appointmentService.getAppointmentDetailsByPatientID(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAppointment(@PathVariable Long id) {
+        appointmentService.deleteAppointment(id);
+        return ResponseEntity.ok().build();
     }
 
 }
