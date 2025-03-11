@@ -39,7 +39,7 @@ public class Appointment extends BaseEntity<Long>{
     @Column(nullable = false)
     private AppointmentSatus status;
 
-    @OneToOne(mappedBy = "appointment",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "appointment",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private ConsultationRecord consultationRecord;
 
     public Appointment(AppointmentSatus status, Patient patient, Doctor doctor, LocalDate appointmentDate,LocalTime appointmentTime) {

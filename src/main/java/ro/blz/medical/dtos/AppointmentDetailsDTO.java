@@ -8,10 +8,8 @@ public record AppointmentDetailsDTO (
         String doctorName,
         String doctorLastName,
         String department,
-        Date appointment_date,
-        Time appointment_time){
+        Date appointmentDate,
+        Time appointmentTime,
+        String status){
 
-//    public AppointmentDetailsDTO(long id, String doctorName, String doctorLastName, String department, String appointmentDate, String appointmentTime) {
-//        this(id,doctorName,doctorLastName,department,appointmentDate,appointmentTime);
-//    }
 }
