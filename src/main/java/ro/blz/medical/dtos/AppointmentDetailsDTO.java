@@ -1,15 +1,17 @@
 package ro.blz.medical.dtos;
 
-import java.sql.Date;
-import java.sql.Time;
+import ro.blz.medical.domain.AppointmentSatus;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public record AppointmentDetailsDTO (
         long id,
         String doctorName,
         String doctorLastName,
         String department,
-        Date appointmentDate,
-        Time appointmentTime,
-        String status){
+        LocalDate appointmentDate,
+        LocalTime appointmentTime,
+        AppointmentSatus status){
 
 }
