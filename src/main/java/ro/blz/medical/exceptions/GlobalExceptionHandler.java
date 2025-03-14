@@ -71,8 +71,14 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),errors.toString());
     }
     @ExceptionHandler(value = AppointmentNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse appointmentNotFound(AppointmentNotFoundException ex) {
+        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = ProcedureNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse procedureNotFound(ProcedureNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
@@ -117,5 +123,7 @@ public class GlobalExceptionHandler {
         }
         return "unknown_constraint";
     }
+
+
 }
 

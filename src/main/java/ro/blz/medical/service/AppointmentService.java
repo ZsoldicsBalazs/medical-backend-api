@@ -9,6 +9,7 @@ import ro.blz.medical.dtos.AppointmentDetailsDTO;
 import ro.blz.medical.exceptions.AppointmentNotFoundException;
 import ro.blz.medical.repository.AppointmentRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class AppointmentService {
 
     @Transactional
     public List<AppointmentDetailsDTO> getAppointmentDetailsByPatientID(long id){
-        return appointmentRepository.getAppointmentByPatientId(id);
+        return appointmentRepository.getAppointmentByPatientId(id).stream().sorted(Comparator.comparing(AppointmentDetailsDTO::appointmentDate).reversed()).collect(Collectors.toList());
     }
 
     @Transactional
