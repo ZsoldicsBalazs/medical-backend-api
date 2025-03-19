@@ -23,26 +23,13 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegistrationRequest registration) {
-//        try {
         return ResponseEntity.ok(patientRegistrationService.registerPatient(registration));
-//        }catch (UserAlreadyExistsException due){
-//            System.out.println("Controller duplicate user exception: " + due.getMessage());
-//            return new ResponseEntity<>(due.getMessage(),HttpStatus.BAD_REQUEST);
-//        }
     }
-
-//    @ExceptionHandler(value = UserAlreadyExistsException.class)
-//    @ResponseStatus(HttpStatus.CONFLICT)
-//    public ErrorResponse handleDuplicateUserException(UserAlreadyExistsException duplicateUserException) {
-//        return new ErrorResponse(HttpStatus.CONFLICT.value(),duplicateUserException.getMessage());
-//    }
-
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> login(@RequestBody UserAuthenticationRequest login) {
 
             AuthenticationResponse response = authenticationService.authenticate(login);
-        System.out.println(response);
             return ResponseEntity.ok(response);
     }
 

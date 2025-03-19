@@ -41,6 +41,7 @@ public class User implements UserDetails, Serializable {
     // UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        System.out.println("This method was called");
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 

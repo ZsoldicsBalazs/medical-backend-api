@@ -14,13 +14,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ro.blz.medical.domain.Patient;
 import ro.blz.medical.dtos.PatientDTO;
-import ro.blz.medical.service.UserService;
+import ro.blz.medical.service.CustomUserDetailsService;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserService service;
+    private final CustomUserDetailsService service;
 
 
     @Bean

@@ -12,13 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ro.blz.medical.domain.User;
 import ro.blz.medical.exceptions.ErrorResponse;
-import ro.blz.medical.service.UserService;
+import ro.blz.medical.service.CustomUserDetailsService;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -44,17 +43,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        jwt = authHeader.substring(7);
+
 
         try {
+            jwt = authHeader.substring(7);
             username = jwtService.extractUsername(jwt); // ACTUALLY THIS IS AN EMAIL !
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) { //if user email exists AND user isn't authenticated
-                System.out.println("User is not connected !");
+
                 User userDetails = (User) userDetailsService.loadUserByUsername(username);         // Get USER FROM DB BY EMAIL !!
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {                            //check if user and token is valid
-                    System.out.println("Token was VALID !");
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
@@ -67,12 +67,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
 
             }
-        } catch (
-                ExpiredJwtException ex) {
-            // Token expirat
+        } catch (ExpiredJwtException ex) {
+
             sendErrorResponse(response, "Token expirat. Va rugam sa va autentificati din nou.");
             return;
-        } catch (JwtException | UsernameNotFoundException ex) {
+        } catch (JwtException ex) {
             // Alte erori legate de JWT sau utilizator negasit
             sendErrorResponse(response, "Token invalid.");
             return;

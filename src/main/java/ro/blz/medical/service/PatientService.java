@@ -19,6 +19,7 @@ public class PatientService {
     private final PatientDTOMapper patientDTOMapper;
 
     public List<Patient> findAll() {
+        System.out.println("Find all patient called 1!");
         return patientRepository.findAll();
     }
 

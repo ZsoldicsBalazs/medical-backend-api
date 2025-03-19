@@ -23,18 +23,15 @@ public class JwtService {
 
     public String extractUsername(String jwt) {
         var username = extractClaim(jwt, Claims::getSubject);
-        System.out.println("ACESTA ESTE USERNAME DIN JWT SERVICE EXTRACT USERNAME: " + username);
         return username;
     }
     public SimpleGrantedAuthority extractRole(String jwt){
         List roles = extractAllClaims(jwt).get("roles", List.class);
-        System.out.println("ROLES --------------------------> : " + roles);
         return (SimpleGrantedAuthority) roles.getFirst();
     }
 
     public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwt);
-        System.out.println("ALL CLAIMS: " + claims);
         return claimsResolver.apply(claims);
     }
 
@@ -72,7 +69,7 @@ public class JwtService {
 
     private Date extractExpiration(String token) {
         Date expirationDate = extractClaim(token, Claims::getExpiration);
-        System.out.println(expirationDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+
         return expirationDate;
     }
 

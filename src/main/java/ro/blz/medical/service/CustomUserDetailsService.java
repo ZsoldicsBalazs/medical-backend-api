@@ -9,7 +9,7 @@ import ro.blz.medical.domain.User;
 import ro.blz.medical.repository.UserRepository;
 
 @Service
-public class UserService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
 
     @Autowired
@@ -18,7 +18,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email){
-        System.out.println("LoadUserBy Username USER SERVICE METHOD " + email);
+        System.out.println("LoadUserBy EMAIL USER SERVICE METHOD " + email);
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
