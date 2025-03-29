@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.dtos.PatientDTO;
 import ro.blz.medical.service.PatientService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/patient")
 @RequiredArgsConstructor
@@ -24,5 +26,10 @@ public class PatientController {
     ResponseEntity<PatientDTO> updatePatient(@RequestBody @Valid PatientDTO patientDTO) {
         PatientDTO patientUpdated = patientService.update(patientDTO);
         return new ResponseEntity<>(patientUpdated, HttpStatus.ACCEPTED);
+    }
+    @GetMapping
+    @RequestMapping("/fulltext")
+    public ResponseEntity<List<PatientDTO>> getAllPatientsBySearch(@RequestParam String search){
+        return new ResponseEntity<>(patientService.searchByCNPPhoneFnameLname(search),HttpStatus.OK);
     }
 }

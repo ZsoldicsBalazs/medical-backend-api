@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "patient_files")
+@Table(name = "patient_document")
 @Getter
 @Setter
 public class PatientDocument extends BaseEntity<Long> {

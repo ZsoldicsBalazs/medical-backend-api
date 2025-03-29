@@ -10,6 +10,7 @@ import ro.blz.medical.exceptions.PatientNotFoundException;
 import ro.blz.medical.repository.PatientRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,13 @@ public class PatientService {
 
     public PatientDTO findById(long id) {
         return patientRepository.findById(id).map(patientDTOMapper).orElseThrow(()-> new PatientNotFoundException("Patient with id "+ id + " not found"));
+    }
+
+    public List<PatientDTO> searchByCNPPhoneFnameLname(String searchWord){
+        return patientRepository.
+                findByCNPContainingIgnoreCaseOrPhoneContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(searchWord)
+                .stream()
+                .map(patientDTOMapper).collect(Collectors.toList());
     }
 
     public PatientDTO save(Patient patient) {
