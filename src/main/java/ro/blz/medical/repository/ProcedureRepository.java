@@ -5,6 +5,6 @@ import ro.blz.medical.domain.Procedure;
 @Repository
 public interface ProcedureRepository extends ICatalogRepository<Procedure,Long> {
 
-    public Procedure findByName(String name);
+    public Procedure findByDRGcode(String drg_code);
 
 }

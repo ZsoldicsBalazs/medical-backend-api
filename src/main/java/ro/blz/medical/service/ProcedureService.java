@@ -21,8 +21,8 @@ public class ProcedureService {
         return procedureRepo.findById(id).orElseThrow(()-> new ProcedureNotFoundException("Procedure with id " + id + " not found"));
     }
     public Procedure save(Procedure procedure) {
-        if (procedureRepo.findByName(procedure.getName()) != null) {
-            throw new RuntimeException("Procedure with name " + procedure.getName() + " already exists");
+        if (procedureRepo.findByDRGcode(procedure.getDRGcode()) != null) {
+            throw new RuntimeException("Procedure with DRG_CODE " + procedure.getDRGcode() + " already exists");
         }
         return procedureRepo.save(procedure);
     }
