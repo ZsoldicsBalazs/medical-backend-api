@@ -1,5 +1,6 @@
 package ro.blz.medical.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,13 @@ public class DoctorController {
     }
 
     @PutMapping()
-    public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody DoctorDTO updatedDoctor){
+    public ResponseEntity<DoctorDTO> updateDoctor(@Valid @RequestBody DoctorDTO updatedDoctor){
         var doctorUpdated = doctorService.updateDoctor(updatedDoctor);
         return ResponseEntity.ok(doctorUpdated);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteDoctor(@PathVariable long id){
+        doctorService.deleteDoctorById(id);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

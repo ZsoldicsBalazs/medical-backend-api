@@ -33,11 +33,10 @@ public class DoctorService {
         return doctorRepository.findAll().stream().map(doctorDTOMapperFunc).collect(Collectors.toList());
     }
 
-    public DoctorDTO deleteDoctorById(long id) {
+    @Transactional
+    public void deleteDoctorById(long id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new DoctorNotFoundException("Doctor not found"));
-        DoctorDTO deletedDoctor = modelMapper.map(doctor, DoctorDTO.class);
         doctorRepository.delete(doctor);
-        return deletedDoctor;
     }
 
     @Transactional

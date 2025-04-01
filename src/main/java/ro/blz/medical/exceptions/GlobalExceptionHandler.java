@@ -61,14 +61,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ErrorResponseList methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
         System.out.println(errors);
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),errors.toString());
+        return new ErrorResponseList(HttpStatus.BAD_REQUEST.value(),errors);
     }
     @ExceptionHandler(value = AppointmentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
