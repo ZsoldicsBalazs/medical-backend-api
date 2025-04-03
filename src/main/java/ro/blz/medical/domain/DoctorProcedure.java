@@ -9,7 +9,6 @@ import org.hibernate.validator.constraints.Email;
 @Getter
 @Setter
 @Table(name = "doctor_procedure")
-@Email
 public class DoctorProcedure extends BaseEntity<Long>{
 
     @ManyToOne

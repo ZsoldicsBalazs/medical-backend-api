@@ -11,8 +11,8 @@ import java.util.List;
 public interface DoctorProcedureRepository extends JpaRepository<DoctorProcedure, Long> {
 
     @Query(value = """
-        SELECT (d.id, d.doctor_id, d.procedure_id,d.price) 
-        FROM doctor_procedure d 
+        SELECT d.id, d.doctor_id, d.procedure_id,d.price\s
+        FROM doctor_procedure d\s
         WHERE d.doctor_id = ?1""",
             nativeQuery = true)
     public List<DoctorProcedure> findByDoctorId(Long id);

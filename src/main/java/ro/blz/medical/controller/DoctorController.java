@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.dtos.DoctorDTO;
+import ro.blz.medical.dtos.DoctorProcedureDTO;
 import ro.blz.medical.service.DoctorService;
 
 import java.util.List;
@@ -37,5 +38,15 @@ public class DoctorController {
     public ResponseEntity deleteDoctor(@PathVariable long id){
         doctorService.deleteDoctorById(id);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/{id}/procedures")
+    public ResponseEntity<List<DoctorProcedureDTO>> getAllProceduresByDoctorId(@PathVariable long id){
+        return new ResponseEntity<>(doctorService.getAllProceduresByDoctor(id), HttpStatus.OK);
+    }
+    @PostMapping("/{id}/procedures")
+    public ResponseEntity<?> addProcedure(@PathVariable long id, @RequestBody DoctorProcedureDTO doctorProcedureDTO){
+//     TODO:  N+1 PROBLEM WHEN USING DTOMAPPER FUNCTION
+        return new ResponseEntity<>(doctorService.addProcedureToDoctor(id,doctorProcedureDTO), HttpStatus.CREATED);
     }
 }
