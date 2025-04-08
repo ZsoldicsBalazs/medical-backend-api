@@ -1,5 +1,6 @@
 package ro.blz.medical.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,11 @@ public interface DoctorProcedureRepository extends JpaRepository<DoctorProcedure
         WHERE d.doctor_id = ?1""",
             nativeQuery = true)
     public List<DoctorProcedure> findByDoctorId(Long id);
+
+    @Query("SELECT dp FROM DoctorProcedure dp " +
+            "LEFT JOIN FETCH dp.doctor " +
+            "LEFT JOIN FETCH dp.procedure " +
+            "WHERE dp.doctor.ID = ?1 AND dp.procedure.ID = ?2")
+    public DoctorProcedure findByDrAndProcedureId(Long id, Long procedureId);
 
 }

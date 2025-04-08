@@ -82,6 +82,13 @@ public class DoctorService {
         return drProcedureToDTO.apply(doctorProcedure);
     }
 
+    @Transactional
+    public DoctorProcedureDTO updateProcedurePrice(long id, DoctorProcedureDTO procedureDTO){
+       DoctorProcedure byDrAndProcedureId = drProcedureRepository.findByDrAndProcedureId(id, procedureDTO.procedure_id());
+       byDrAndProcedureId.setPrice(procedureDTO.price());
+       return drProcedureToDTO.apply(byDrAndProcedureId);
+    }
+
 
 
 }

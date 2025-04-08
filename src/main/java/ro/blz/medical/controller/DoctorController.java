@@ -49,4 +49,10 @@ public class DoctorController {
 //     TODO:  N+1 PROBLEM WHEN USING DTOMAPPER FUNCTION
         return new ResponseEntity<>(doctorService.addProcedureToDoctor(id,doctorProcedureDTO), HttpStatus.CREATED);
     }
+    @PutMapping("/{id}/procedures")
+    public ResponseEntity<?> updateProcedure(@PathVariable long id, @RequestBody DoctorProcedureDTO doctorProcedureDTO){
+        DoctorProcedureDTO updatedProcedure = doctorService.updateProcedurePrice(id,doctorProcedureDTO);
+        System.out.println("IN CONTROLLER UPDATED: --> " + updatedProcedure);
+        return new ResponseEntity<>(updatedProcedure, HttpStatus.OK);
+    }
 }
