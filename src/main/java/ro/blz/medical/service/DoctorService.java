@@ -89,6 +89,16 @@ public class DoctorService {
        return drProcedureToDTO.apply(byDrAndProcedureId);
     }
 
+    @Transactional
+    public Boolean deleteProcedureByDoctorIdAndProcedureId(long id, long procedureId) {
+        DoctorProcedure byDrAndProcedureId = drProcedureRepository.findByDrAndProcedureId(id, procedureId);
+        if (byDrAndProcedureId != null){
+            drProcedureRepository.delete(byDrAndProcedureId);
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
 
 
 }

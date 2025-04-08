@@ -55,4 +55,10 @@ public class DoctorController {
         System.out.println("IN CONTROLLER UPDATED: --> " + updatedProcedure);
         return new ResponseEntity<>(updatedProcedure, HttpStatus.OK);
     }
+    @DeleteMapping("/{id}/procedures/{pid}")
+    public ResponseEntity<Boolean> deleteProcedure(@PathVariable long id, @PathVariable long pid){
+            boolean result = doctorService.deleteProcedureByDoctorIdAndProcedureId(id,pid);
+        System.out.println(result);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
