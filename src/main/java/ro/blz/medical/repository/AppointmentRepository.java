@@ -60,15 +60,16 @@ public interface AppointmentRepository extends ICatalogRepository<Appointment,Lo
                     a.status) \
             FROM Appointment a \
             WHERE \
-            a.doctor.ID = :doctorId AND \
+            a.doctor.user.user_id = :userID AND \
             (COALESCE(:cnp, '') = '' OR a.patient.CNP LIKE %:cnp%) AND \
             (COALESCE(:patientName, '') = '' OR a.patient.lastName LIKE %:patientName%) AND \
             (COALESCE(:patientFirstName, '') = '' OR a.patient.firstName LIKE %:patientFirstName%)""")
     public List<AppointmentDetailsToDrDTO> getAppointmentsByCriteriaWithoutDate(
-            @Param("doctorId")long doctorId,
+            @Param("userID")long userID,
             @Param("cnp") String cnp,
             @Param("patientName") String patientName,
             @Param("patientFirstName") String patientFirstName);
+
     @Query("""
             SELECT new ro.blz.medical.dtos.AppointmentDetailsToDrDTO(
                     a.ID,
@@ -79,13 +80,13 @@ public interface AppointmentRepository extends ICatalogRepository<Appointment,Lo
                     a.status) \
             FROM Appointment a \
             WHERE \
-            a.doctor.ID = :doctorId AND \
+            a.doctor.user.user_id = :userID AND \
             (COALESCE(:cnp, '') = '' OR a.patient.CNP LIKE %:cnp%) AND \
             (COALESCE(:patientName, '') = '' OR LOWER(a.patient.lastName) LIKE LOWER(CONCAT('%', :patientName, '%'))) AND \
             (COALESCE(:patientFirstName, '') = '' OR LOWER(a.patient.firstName) LIKE LOWER(CONCAT('%', :patientFirstName, '%'))) AND \
             (:appointmentDate IS NULL OR a.appointmentDate = CAST(:appointmentDate AS date))""")
     public List<AppointmentDetailsToDrDTO> getAppointmentsByCriteriaWithDate(
-            @Param("doctorId")long doctorId,
+            @Param("userID")long userID,
             @Param("cnp") String cnp,
             @Param("patientName") String patientName,
             @Param("patientFirstName") String patientFirstName,

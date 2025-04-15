@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.blz.medical.dtos.DoctorDTO;
 import ro.blz.medical.dtos.DoctorProcedureDTO;
@@ -56,9 +57,9 @@ public class DoctorController {
         return new ResponseEntity<>(updatedProcedure, HttpStatus.OK);
     }
     @DeleteMapping("/{id}/procedures/{pid}")
-    public ResponseEntity<Boolean> deleteProcedure(@PathVariable long id, @PathVariable long pid){
+    public ResponseEntity<Boolean> deleteProcedure(@PathVariable long id, @PathVariable long pid, Authentication auth){
             boolean result = doctorService.deleteProcedureByDoctorIdAndProcedureId(id,pid);
-        System.out.println(result);
+        System.out.println(auth);
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
