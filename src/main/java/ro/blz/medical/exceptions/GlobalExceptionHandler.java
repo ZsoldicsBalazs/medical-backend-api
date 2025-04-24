@@ -63,9 +63,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseList methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
-                .getAllErrors()
+                .getFieldErrors()
                 .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map(error -> error.getField() + " " + error.getDefaultMessage())
                 .toList();
         System.out.println(errors);
         return new ErrorResponseList(HttpStatus.BAD_REQUEST.value(),errors);
@@ -80,6 +80,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse procedureNotFound(ProcedureNotFoundException ex) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value= IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse illegalArgument(IllegalArgumentException ex) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
 

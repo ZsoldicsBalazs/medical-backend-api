@@ -9,12 +9,14 @@ import java.util.List;
 public interface ConsultationRecordRepository extends ICatalogRepository<ConsultationRecord,Long>{
 
     @Query(value = """
-SELECT cr.id,cr.appointment_id,cr.diagnosis,cr.results,cr.created_at
-FROM consultation_records cr
-LEFT JOIN appointments ap ON cr.appointment_id=ap.id
-LEFT JOIN patient p ON ap.patient_id=p.id
-where p.id= :patientId
-""",nativeQuery = true)
+        SELECT cr.id,cr.appointment_id,cr.diagnosis,cr.results,cr.created_at,concat(doc.first_name, ' ', doc.last_name) as drName,doc.department
+        FROM consultation_records cr
+        LEFT JOIN appointments ap ON cr.appointment_id=ap.id
+        LEFT JOIN patient p ON ap.patient_id=p.id
+        LEFT JOIN doctor doc ON ap.doctor_id=doc.id
+        where p.id= :patientId
+        """
+            ,nativeQuery = true)
     public List<ConsultationRecordDTO> findBypatientId(Long patientId);
 
 }

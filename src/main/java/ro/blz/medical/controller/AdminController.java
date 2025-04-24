@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @PostMapping("/register-doctor")
-    public ResponseEntity<DoctorDTO> register(@RequestBody DoctorRegistrationRequest registration) {
+    public ResponseEntity<DoctorDTO> register(@RequestBody @Valid DoctorRegistrationRequest registration) {
         return ResponseEntity.ok(adminService.registerDoctor(registration));
     }
 
