@@ -45,4 +45,9 @@ public class AppointmentService {
         var appointment = appointmentRepository.findById(id).orElseThrow(() -> new AppointmentNotFoundException("Appointment with " + id + " not found"));
         appointment.setStatus(AppointmentSatus.CANCELLED);
     }
+
+    @Transactional
+    public List<AppointmentDetailsDTO> getAllCompletedAppointments(long id){
+        return appointmentRepository.getCompletedAppointmentByPatientId(id);
+    }
 }

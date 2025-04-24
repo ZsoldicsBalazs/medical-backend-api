@@ -1,14 +1,13 @@
 package ro.blz.medical.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "consultation_records")
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -25,6 +24,22 @@ public class ConsultationRecord extends BaseEntity<Long> {
     @Column(name = "results", length = 2000)
     private String results;
 
+    @Column(name="created_at")
+    private LocalDateTime created_at;
+
+    @Builder
+    public ConsultationRecord(Appointment appointment, String diagnosis, String results) {
+        this.appointment = appointment;
+        this.diagnosis = diagnosis;
+        this.results = results;
+        this.created_at = LocalDateTime.now();
+    }
 
 
+    public ConsultationRecord(Appointment appointment, String diagnosis, String results, LocalDateTime created_at) {
+        this.appointment = appointment;
+        this.diagnosis = diagnosis;
+        this.results = results;
+        this.created_at = created_at;
+    }
 }

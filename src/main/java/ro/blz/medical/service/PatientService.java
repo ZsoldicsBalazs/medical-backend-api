@@ -3,10 +3,13 @@ package ro.blz.medical.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.blz.medical.domain.ConsultationRecord;
 import ro.blz.medical.domain.Patient;
+import ro.blz.medical.dtos.ConsultationRecordDTO;
 import ro.blz.medical.dtos.PatientDTO;
 import ro.blz.medical.dtos.mapper.PatientDTOMapper;
 import ro.blz.medical.exceptions.PatientNotFoundException;
+import ro.blz.medical.repository.ConsultationRecordRepository;
 import ro.blz.medical.repository.PatientRepository;
 
 import java.util.List;
@@ -18,6 +21,7 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientDTOMapper patientDTOMapper;
+    private final ConsultationRecordRepository consultationRecordRepository;
 
     public List<Patient> findAll() {
         System.out.println("Find all patient called 1!");
@@ -62,5 +66,10 @@ public class PatientService {
         System.out.println(patient1);
 
         return patientDTOMapper.apply(patient1);
+    }
+
+
+    public List<ConsultationRecordDTO> getAllConsultationRecord(Long id) {
+        return consultationRecordRepository.findBypatientId(id);
     }
 }

@@ -91,4 +91,20 @@ public interface AppointmentRepository extends ICatalogRepository<Appointment,Lo
             @Param("patientName") String patientName,
             @Param("patientFirstName") String patientFirstName,
             @Param("appointmentDate") String appointmentDate);
+
+
+    @Query("""
+    select new ro.blz.medical.dtos.AppointmentDetailsDTO(
+        a.ID,
+        d.firstName,
+        d.lastName,
+        d.department,
+        a.appointmentDate,
+        a.appointmentTime,
+        a.status)
+    from Appointment a
+    left join a.doctor d
+    where a.patient.ID = ?1 and a.status="COMPLETED"
+""")
+    public List<AppointmentDetailsDTO>getCompletedAppointmentByPatientId(Long patientId);
 }

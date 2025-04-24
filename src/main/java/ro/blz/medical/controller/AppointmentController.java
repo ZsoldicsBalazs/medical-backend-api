@@ -52,4 +52,9 @@ public class AppointmentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}/completed")
+    public List<AppointmentDetailsDTO> findCompletedAppointments(@PathVariable Long id) {
+        return appointmentService.getAllCompletedAppointments(id);
+    }
+
 }
