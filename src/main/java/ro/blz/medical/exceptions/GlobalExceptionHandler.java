@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> error.getField() + " " + error.getDefaultMessage())
                 .toList();
-        System.out.println(errors);
+
         return new ErrorResponseList(HttpStatus.BAD_REQUEST.value(),errors);
     }
     @ExceptionHandler(value = AppointmentNotFoundException.class)

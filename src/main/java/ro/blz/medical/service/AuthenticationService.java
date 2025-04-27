@@ -26,7 +26,7 @@ public class AuthenticationService {
 
         User user2 = (User) user.getPrincipal();
         var jwtToken = jwtService.generateToken(user2);
-        System.out.println("Authenticate called first time");
+
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);
         authenticationResponse.setProfile(profileService.getProfile(user2.getUser_id(),user2.getRole()));

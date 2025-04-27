@@ -66,13 +66,13 @@ public class DoctorService {
 
     @Transactional
     public List<DoctorProcedureDTO> getAllProceduresByDoctor(long id) {
-        Doctor targetDoctor = doctorRepository.findById(id).orElseThrow(() -> new DoctorNotFoundException("Doctor with id: " + id + " not found"));
+
         return drProcedureRepository.findByDoctorId(id).stream().map(drProcedureToDTO).collect(Collectors.toList());
     }
     @Transactional
     public DoctorProcedureDTO addProcedureToDoctor(long id, DoctorProcedureDTO procedureDTO){
-        Doctor existingDr = doctorRepository.findById(procedureDTO.doctor_id()).orElseThrow(()->new DoctorNotFoundException("Doctor with id: " + procedureDTO.doctor_id() + " not found"));
-        Procedure existingProcedure = procedureRepository.findById(procedureDTO.procedure_id()).orElseThrow(()-> new ProcedureNotFoundException("Procedure with ID:" + procedureDTO.procedure_id() + " not found"));
+        Doctor existingDr = doctorRepository.getReferenceById(id);
+        Procedure existingProcedure = procedureRepository.getReferenceById(procedureDTO.procedure_id());
 
         DoctorProcedure doctorProcedure = new DoctorProcedure();
         doctorProcedure.setDoctor(existingDr);
