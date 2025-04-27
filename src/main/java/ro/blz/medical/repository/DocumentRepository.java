@@ -2,7 +2,6 @@ package ro.blz.medical.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ro.blz.medical.domain.Patient;
 import ro.blz.medical.domain.PatientDocument;
 import ro.blz.medical.dtos.DocumentDTO;
 
@@ -16,5 +15,5 @@ select new ro.blz.medical.dtos.DocumentDTO(d.documentName,d.uploadDate) from Pat
 where d.patient.ID=:id
 """)
     public List<DocumentDTO> findByPatientId(Long id);
-    public PatientDocument findByDocumentNameAndPatientID(String documentName,Long id);
+    public PatientDocument findByDocumentNameAndPatientID(String documentName, Long patient_ID);
 }

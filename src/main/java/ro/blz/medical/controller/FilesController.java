@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ro.blz.medical.dtos.DocumentDTO;
-import ro.blz.medical.service.DocumentsService;
+import ro.blz.medical.service.DocumentService;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ import java.util.List;
 @RequestMapping("/api/v1/files")
 @RequiredArgsConstructor
 public class FilesController {
-    private final DocumentsService documentsService;
+    private final DocumentService documentService;
 
     @PostMapping("/{id}/upload")
     public ResponseEntity<?> save(@RequestParam("file") MultipartFile file, @PathVariable Long id) {
-        documentsService.saveDocument(id,file);
+        documentService.saveDocument(id,file);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
     public List<DocumentDTO> getById(@PathVariable Long id) {
-        return documentsService.getAllDocumentsByPatientId(id);
+        return documentService.getAllDocumentsByPatientId(id);
     }
 
 
