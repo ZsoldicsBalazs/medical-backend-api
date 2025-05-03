@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +23,10 @@ public class LocalFileHandler implements FileHandler {
         validateFilePathForPDF(filePath);
 
         Path target = Paths.get(filePath);
-        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+        InputStream is = file.getInputStream();
+
+        Files.copy(is, target, StandardCopyOption.REPLACE_EXISTING);
+        is.close();
     }
     @Override
     public String read(String filePath) throws IOException {

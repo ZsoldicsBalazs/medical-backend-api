@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MultipartException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +71,20 @@ public class GlobalExceptionHandler {
 
         return new ErrorResponseList(HttpStatus.BAD_REQUEST.value(),errors);
     }
+
+//    @ExceptionHandler(value = Exception.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorResponse exception(Exception ex) {
+//        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+//    }
+
+    @ExceptionHandler(value = MultipartException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse exception(MultipartException ex) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
+
     @ExceptionHandler(value = AppointmentNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse appointmentNotFound(AppointmentNotFoundException ex) {

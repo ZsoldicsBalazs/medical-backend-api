@@ -23,6 +23,7 @@ public class FilesController {
 
     @GetMapping("/{id}")
     public List<DocumentDTO> getById(@PathVariable Long id) {
+        System.out.println("ALL DOCUMENTS SENT");
         return documentService.getAllDocumentsByPatientId(id);
     }
 
